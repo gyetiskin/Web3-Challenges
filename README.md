@@ -294,3 +294,57 @@ function sumOfTwoIntegers(uint256 a, uint256 b)
     return a + b;
 }
 ```
+
+---
+
+### 10. Add Item to Inventory
+**File:** `AddItemToInventory.sol`
+
+**Problem:** Write a contract that manages an inventory of items (name + price). Only the contract owner should be able to add items using a custom `onlyOwner` modifier.
+
+**Solution:** Three key parts: (1) The `onlyOwner` modifier uses `require(msg.sender == owner)` to check that the caller is the deployer before executing the function body (`_`). (2) `addItemToInventory` pushes a new `Item` struct into the `inventory` array. (3) `getInventory` returns the full array and `clearInventory` uses `delete` to reset it. This demonstrates structs, dynamic arrays, modifiers, and access control in Solidity.
+
+**Before:**
+```solidity
+function addItemToInventory(
+    string memory _name,
+    uint256 _price
+) public onlyOwner {
+    // TODO
+}
+
+modifier onlyOwner() {
+    _;
+}
+
+function getInventory() public view returns (Item[] memory) {
+    // TODO
+}
+
+function clearInventory() private onlyOwner {
+    // TODO
+}
+```
+
+**After:**
+```solidity
+function addItemToInventory(
+    string memory _name,
+    uint256 _price
+) public onlyOwner {
+    inventory.push(Item(_name, _price));
+}
+
+modifier onlyOwner() {
+    require(msg.sender == owner, "Not the owner");
+    _;
+}
+
+function getInventory() public view returns (Item[] memory) {
+    return inventory;
+}
+
+function clearInventory() private onlyOwner {
+    delete inventory;
+}
+```
