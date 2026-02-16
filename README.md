@@ -263,3 +263,34 @@ function helloWorld() public pure returns (string memory) {
     return "Hello World";
 }
 ```
+
+---
+
+### 9. Sum of Two Integers
+**File:** `SumOfTwoIntegers.sol`
+
+**Problem:** Calculate the sum of two unsigned integers `a` and `b`.
+
+**Solution:** Return `a + b`. In Solidity ^0.8.0+, arithmetic overflow is checked by default, so if the sum exceeds `uint256` max value, the transaction will revert automatically. For the given constraints (0 <= a,b <= 10^5), overflow is not a concern.
+
+**Before:**
+```solidity
+function sumOfTwoIntegers(uint256 a, uint256 b)
+    public
+    pure
+    returns (uint256)
+{
+    //TODO
+}
+```
+
+**After:**
+```solidity
+function sumOfTwoIntegers(uint256 a, uint256 b)
+    public
+    pure
+    returns (uint256)
+{
+    return a + b;
+}
+```
