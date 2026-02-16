@@ -240,3 +240,26 @@ function roundTrip(
     return startIndex;
 }
 ```
+
+---
+
+### 8. Hello World
+**File:** `HelloWorld.sol`
+
+**Problem:** Return the string "Hello World" from a smart contract function.
+
+**Solution:** Simply return a string literal. In Solidity, strings must be returned with the `memory` keyword because they are dynamically-sized and need to be stored in temporary memory during execution. This is the most basic Solidity challenge — a starting point for smart contract development.
+
+**Before:**
+```solidity
+function helloWorld() public pure returns (string memory) {
+    //Code here!
+}
+```
+
+**After:**
+```solidity
+function helloWorld() public pure returns (string memory) {
+    return "Hello World";
+}
+```
