@@ -404,6 +404,6 @@ function calculateGas() external returns(uint _gasUsed) {
     uint gasStart = gasleft();
     ++c;
     uint gasEnd = gasleft();
-    _gasUsed = gasStart - gasEnd;
+    _gasUsed = gasStart - gasEnd - 3;
 }
 ```
