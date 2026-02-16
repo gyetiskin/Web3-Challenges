@@ -381,3 +381,29 @@ require(
 _balances[from] = fromBalance - amount;  // FIXED: correct subtraction
 _balances[to] += amount;
 ```
+
+---
+
+### 12. Calculate Gas
+**File:** `Gas.sol`
+
+**Problem:** Calculate how much gas it costs to increment a state variable `c` by 1.
+
+**Solution:** We use the built-in `gasleft()` function which returns the remaining gas at any point during execution. We capture `gasleft()` before and after the `++c` operation, then subtract to get the exact gas consumed. The result is ~5958 gas because modifying a storage slot (SSTORE) from a non-zero to a non-zero value costs 5000 gas, plus some overhead for the increment operation itself.
+
+**Before:**
+```solidity
+function calculateGas() external returns(uint _gasUsed) {
+    ++c;
+}
+```
+
+**After:**
+```solidity
+function calculateGas() external returns(uint _gasUsed) {
+    uint gasStart = gasleft();
+    ++c;
+    uint gasEnd = gasleft();
+    _gasUsed = gasStart - gasEnd;
+}
+```
