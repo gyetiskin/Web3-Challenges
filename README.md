@@ -63,7 +63,7 @@ function findMaxNumber(uint256[] memory numbers) external pure returns (uint256)
 ### 3. Storage Smart Contract
 **File:** `StorageContract.sol`
 
-**Problem:** Create a smart contract that can store a value and retrieve it later — the most fundamental read/write operation on the blockchain.
+**Problem:** Create a smart contract that can store a value and retrieve it later , the most fundamental read/write operation on the blockchain.
 
 **Solution:** We declare a `uint256 private storedValue` state variable. State variables in Solidity are permanently stored on the blockchain. The `storeValue()` function writes a new value to this variable (a write/transaction operation that costs gas). The `readValue()` function is marked `view` because it only reads from the blockchain without modifying state, meaning it costs no gas when called externally. This pattern is the foundation of all blockchain data storage.
 
@@ -155,7 +155,7 @@ function calculateFactorial(uint256 n) public pure returns (uint256) {
 
 **Problem:** Save the deployer's account address and make it the owner of the contract, then provide a way to retrieve that address.
 
-**Solution:** We use `msg.sender` inside the `constructor()` to capture the address of the account that deploys the contract. The constructor runs only once — at deployment time — so `msg.sender` at that moment is always the deployer. We store it in a `private` state variable `owner`. The `getOwner()` function is marked `view` because it only reads from state without modifying it. This is the foundational ownership pattern used in most real-world smart contracts (e.g. OpenZeppelin's `Ownable`).
+**Solution:** We use `msg.sender` inside the `constructor()` to capture the address of the account that deploys the contract. The constructor runs only once, at deployment time, so `msg.sender` at that moment is always the deployer. We store it in a `private` state variable `owner`. The `getOwner()` function is marked `view` because it only reads from state without modifying it. This is the foundational ownership pattern used in most real-world smart contracts (e.g. OpenZeppelin's `Ownable`).
 
 **Before:**
 ```solidity
@@ -189,14 +189,14 @@ contract OwnerContract {
 
 **Problem:** You have accounts on multiple exchanges. Each exchange has a wallet balance and a network fee to transfer funds to the next exchange. Starting from an exchange, you transfer funds clockwise. Determine the starting exchange index from which you can complete a full round trip consolidating all funds. If not possible, return `-1`.
 
-**Solution:** This is the classic "Gas Station" problem. We track two values: `totalBalance` (sum of all `walletBalances[i] - networkFees[i]`) and `currentBalance` (running balance from the current candidate start). If `totalBalance < 0`, there's not enough funds overall → return `-1`. As we iterate, whenever `currentBalance` drops below 0, it means we can't start from any previous index, so we reset and try starting from the next exchange. This greedy approach works in O(n) time with a single pass — no need for brute-force nested loops.
+**Solution:** This is the classic "Gas Station" problem. We track two values: `totalBalance` (sum of all `walletBalances[i] - networkFees[i]`) and `currentBalance` (running balance from the current candidate start). If `totalBalance < 0`, there's not enough funds overall, return `-1`. As we iterate, whenever `currentBalance` drops below 0, it means we can't start from any previous index, so we reset and try starting from the next exchange. This greedy approach works in O(n) time with a single pass — no need for brute-force nested loops.
 
 **Example:** `walletBalances = [1,2,3,4,5]`, `networkFees = [3,4,5,1,2]`
 | Exchange | net (balance - fee) | currentBalance | startIndex |
 |----------|-------------------|----------------|------------|
-| 0 | 1 - 3 = -2 | -2 → reset to 0 | 1 |
-| 1 | 2 - 4 = -2 | -2 → reset to 0 | 2 |
-| 2 | 3 - 5 = -2 | -2 → reset to 0 | 3 |
+| 0 | 1 - 3 = -2 | -2 , reset to 0 | 1 |
+| 1 | 2 - 4 = -2 | -2 , reset to 0 | 2 |
+| 2 | 3 - 5 = -2 | -2 , reset to 0 | 3 |
 | 3 | 4 - 1 = 3 | 3 | 3 |
 | 4 | 5 - 2 = 3 | 6 | 3 |
 
@@ -248,7 +248,7 @@ function roundTrip(
 
 **Problem:** Return the string "Hello World" from a smart contract function.
 
-**Solution:** Simply return a string literal. In Solidity, strings must be returned with the `memory` keyword because they are dynamically-sized and need to be stored in temporary memory during execution. This is the most basic Solidity challenge — a starting point for smart contract development.
+**Solution:** Simply return a string literal. In Solidity, strings must be returned with the `memory` keyword because they are dynamically-sized and need to be stored in temporary memory during execution. This is the most basic Solidity challenge, a starting point for smart contract development.
 
 **Before:**
 ```solidity
