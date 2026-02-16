@@ -147,3 +147,37 @@ function calculateFactorial(uint256 n) public pure returns (uint256) {
     return result;
 }
 ```
+
+---
+
+### 6. Owner Smart Contract
+**File:** `OwnerContract.sol`
+
+**Problem:** Save the deployer's account address and make it the owner of the contract, then provide a way to retrieve that address.
+
+**Solution:** We use `msg.sender` inside the `constructor()` to capture the address of the account that deploys the contract. The constructor runs only once — at deployment time — so `msg.sender` at that moment is always the deployer. We store it in a `private` state variable `owner`. The `getOwner()` function is marked `view` because it only reads from state without modifying it. This is the foundational ownership pattern used in most real-world smart contracts (e.g. OpenZeppelin's `Ownable`).
+
+**Before:**
+```solidity
+contract OwnerContract {
+
+    function getOwner() external view returns (address) {
+        // empty
+    }
+}
+```
+
+**After:**
+```solidity
+contract OwnerContract {
+    address private owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function getOwner() external view returns (address) {
+        return owner;
+    }
+}
+```
