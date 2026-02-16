@@ -54,3 +54,16 @@ readValue() returns (uint256)
 ```solidity
 compareStrings(string memory str1, string memory str2) returns (bool)
 ```
+
+---
+
+### 5. Calculate Factorial
+**File:** `FactorialContract.sol`
+
+**Problem:** Given a non-negative integer `n`, calculate its factorial (`n!`). Factorial is the product of all positive integers up to `n`. For example: `5! = 5 × 4 × 3 × 2 × 1 = 120`.
+
+**Solution:** We use an iterative approach with a `for` loop. We initialize `result` to 1 (since `0! = 1` and `1! = 1`), then multiply it by every integer from 2 up to `n`. This is preferred over recursion in Solidity because recursive calls consume more gas due to additional function call overhead and stack usage. When `n` is 0 or 1, the loop doesn't execute and `result` stays 1, which is mathematically correct.
+
+```solidity
+calculateFactorial(uint256 n) returns (uint256)
+```
