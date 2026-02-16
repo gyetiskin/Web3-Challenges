@@ -401,8 +401,9 @@ function calculateGas() external returns(uint _gasUsed) {
 **After:**
 ```solidity
 function calculateGas() external returns(uint _gasUsed) {
-    _gasUsed = gasleft();
+    uint gasStart = gasleft();
     ++c;
-    _gasUsed -= gasleft();
+    uint gasEnd = gasleft();
+    _gasUsed = gasStart - gasEnd - 3;
 }
 ```
