@@ -348,3 +348,36 @@ function clearInventory() private onlyOwner {
     delete inventory;
 }
 ```
+
+---
+
+### 11. Fix Transfer Token
+**File:** `FixTransferToken.sol`
+
+**Problem:** The ERC20 transfer function has bugs. A user with 20 coins cannot transfer 10 coins. Find and fix the errors.
+
+**Solution:** There were two bugs in the `_transfer` function:
+
+**Bug 1:** `fromBalance <= amount` should be `fromBalance >= amount`. The original check was reversed, meaning it only allowed transfers when the balance was LESS than the amount (which is the opposite of what we want).
+
+**Bug 2:** `_balances[from] = amount - fromBalance` should be `_balances[from] = fromBalance - amount`. The subtraction was reversed, which would give incorrect (or overflowing) results.
+
+**Before (Buggy):**
+```solidity
+require(
+    fromBalance <= amount,        // BUG: should be >=
+    "ERC20: transfer amount exceeds balance"
+);
+_balances[from] = amount - fromBalance;  // BUG: reversed subtraction
+_balances[to] += amount;
+```
+
+**After (Fixed):**
+```solidity
+require(
+    fromBalance >= amount,        // FIXED: balance must be >= amount
+    "ERC20: transfer amount exceeds balance"
+);
+_balances[from] = fromBalance - amount;  // FIXED: correct subtraction
+_balances[to] += amount;
+```
