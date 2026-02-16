@@ -4,9 +4,8 @@ contract Gas {
     uint public c = 1;
 
     function calculateGas() external returns(uint _gasUsed) {
-        uint gasStart = gasleft();
+        _gasUsed = gasleft();
         ++c;
-        uint gasEnd = gasleft();
-        _gasUsed = gasStart - gasEnd - 3;
+        _gasUsed -= gasleft();
     }
 }
