@@ -181,3 +181,62 @@ contract OwnerContract {
     }
 }
 ```
+
+---
+
+### 7. Cryptocurrency Round Trip
+**File:** `CryptoTrader.sol`
+
+**Problem:** You have accounts on multiple exchanges. Each exchange has a wallet balance and a network fee to transfer funds to the next exchange. Starting from an exchange, you transfer funds clockwise. Determine the starting exchange index from which you can complete a full round trip consolidating all funds. If not possible, return `-1`.
+
+**Solution:** This is the classic "Gas Station" problem. We track two values: `totalBalance` (sum of all `walletBalances[i] - networkFees[i]`) and `currentBalance` (running balance from the current candidate start). If `totalBalance < 0`, there's not enough funds overall → return `-1`. As we iterate, whenever `currentBalance` drops below 0, it means we can't start from any previous index, so we reset and try starting from the next exchange. This greedy approach works in O(n) time with a single pass — no need for brute-force nested loops.
+
+**Example:** `walletBalances = [1,2,3,4,5]`, `networkFees = [3,4,5,1,2]`
+| Exchange | net (balance - fee) | currentBalance | startIndex |
+|----------|-------------------|----------------|------------|
+| 0 | 1 - 3 = -2 | -2 → reset to 0 | 1 |
+| 1 | 2 - 4 = -2 | -2 → reset to 0 | 2 |
+| 2 | 3 - 5 = -2 | -2 → reset to 0 | 3 |
+| 3 | 4 - 1 = 3 | 3 | 3 |
+| 4 | 5 - 2 = 3 | 6 | 3 |
+
+Total = 0 (>= 0), so answer is **3**.
+
+**Before:**
+```solidity
+function roundTrip(
+            int[] memory walletBalances,
+            int[] memory networkFees
+            ) public returns (int) {
+    // empty
+}
+```
+
+**After:**
+```solidity
+function roundTrip(
+            int[] memory walletBalances,
+            int[] memory networkFees
+            ) public pure returns (int) {
+    int totalBalance = 0;
+    int currentBalance = 0;
+    int startIndex = 0;
+
+    for (uint256 i = 0; i < walletBalances.length; i++) {
+        int net = walletBalances[i] - networkFees[i];
+        totalBalance += net;
+        currentBalance += net;
+
+        if (currentBalance < 0) {
+            currentBalance = 0;
+            startIndex = int(i + 1);
+        }
+    }
+
+    if (totalBalance < 0) {
+        return -1;
+    }
+
+    return startIndex;
+}
+```
